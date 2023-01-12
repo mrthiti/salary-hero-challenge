@@ -34,6 +34,6 @@ CREATE TABLE "public"."user" (
 ) WITH (oids = false);
 
 INSERT INTO "user" ("uuid", "user_name", "email", "role_id", "password") VALUES
-('740b1e0e-925a-11ed-a1eb-0242ac120002',	'super_user',	'super_user@super-company.com',	1,	'1234');
+('740b1e0e-925a-11ed-a1eb-0242ac120002',	'super_user',	'super_user@super-company.com',	1,	'$2b$10$scWFhtqCf003mbD6/KF6iOswXN9ufBwemJ7UJi1LwSnzvb9JS652a');
 
 -- 2023-01-12 09:22:09.624989+00

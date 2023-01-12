@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 import { LoginDto, TokenDto } from './auth.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -19,7 +20,7 @@ export class AuthService {
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
     }
 
-    if (loginData.password === foundUser.password) {
+    if (bcrypt.compare(loginData.password, foundUser.password)) {
       return {
         token: await this.jwtService.signAsync({ uuid: foundUser.uuid }),
       } as TokenDto;
