@@ -5,6 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { UserEntity } from './user/user.entity';
+import { CompanyModule } from './company/company.module';
+import { CompanyEntity } from './company/company.entity';
 
 @Module({
   imports: [
@@ -20,13 +22,14 @@ import { UserEntity } from './user/user.entity';
           username: configService.get('POSTGRES_USER'),
           password: configService.get('POSTGRES_PASSWORD'),
           database: configService.get('POSTGRES_DB'),
-          entities: [UserEntity],
+          entities: [UserEntity, CompanyEntity],
           // synchronize: true,
         };
       },
     }),
     AuthModule,
     UserModule,
+    CompanyModule,
   ],
   controllers: [AppController],
   providers: [],
