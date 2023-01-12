@@ -6,6 +6,7 @@ import {
   UseGuards,
   Request,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LoginDto, TokenDto } from './auth/auth.dto';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthService } from './auth/auth.service';
@@ -19,11 +20,24 @@ export class AppController {
     private readonly userService: UserService,
   ) {}
 
+  @ApiTags('Authentication')
   @Post('/auth/login')
+  @ApiResponse({
+    status: 200,
+    description: 'The token',
+    type: TokenDto,
+  })
   async login(@Body() loginData: LoginDto): Promise<TokenDto> {
     return this.authService.login(loginData);
   }
 
+  @ApiTags('User')
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 200,
+    description: 'User infomation.',
+    type: UserInfoDto,
+  })
   @Get('/user/info')
   @UseGuards(AuthGuard)
   async getUserInfo(@Request() req): Promise<UserInfoDto> {
