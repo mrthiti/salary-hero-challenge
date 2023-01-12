@@ -20,7 +20,7 @@ export class AuthService {
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
     }
 
-    if (bcrypt.compare(loginData.password, foundUser.password)) {
+    if (await bcrypt.compare(loginData.password, foundUser.password)) {
       return {
         token: await this.jwtService.signAsync({ uuid: foundUser.uuid }),
       } as TokenDto;

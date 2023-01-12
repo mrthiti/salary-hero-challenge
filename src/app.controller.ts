@@ -23,9 +23,13 @@ export class AppController {
   @ApiTags('Authentication')
   @Post('/auth/login')
   @ApiResponse({
-    status: 200,
+    status: 201,
     description: 'The token',
     type: TokenDto,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized.',
   })
   async login(@Body() loginData: LoginDto): Promise<TokenDto> {
     return this.authService.login(loginData);
