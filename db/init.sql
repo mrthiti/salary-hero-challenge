@@ -10,6 +10,8 @@ CREATE TABLE "public"."company" (
     CONSTRAINT "company_pkey" PRIMARY KEY ("id")
 ) WITH (oids = false);
 
+INSERT INTO "company" ("id", "name") VALUES
+(1,	'Salary Hero                                                                                                                                                                                                                                                     ');
 
 CREATE SEQUENCE role_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1;
 
@@ -27,13 +29,14 @@ INSERT INTO "role" ("id", "name") VALUES
 CREATE TABLE "public"."user" (
     "uuid" uuid NOT NULL,
     "user_name" character varying NOT NULL,
+    "password" character varying NOT NULL,
     "email" character varying NOT NULL,
     "role_id" integer NOT NULL,
-    "password" character varying NOT NULL,
+    "company_id" integer NOT NULL,
     CONSTRAINT "user_id" PRIMARY KEY ("uuid")
 ) WITH (oids = false);
 
-INSERT INTO "user" ("uuid", "user_name", "email", "role_id", "password") VALUES
-('740b1e0e-925a-11ed-a1eb-0242ac120002',	'super_user',	'super_user@super-company.com',	1,	'$2b$10$scWFhtqCf003mbD6/KF6iOswXN9ufBwemJ7UJi1LwSnzvb9JS652a');
+INSERT INTO "user" ("uuid", "user_name", "password", "email", "role_id", "company_id") VALUES
+('740b1e0e-925a-11ed-a1eb-0242ac120002',	'super_user',	'$2b$10$scWFhtqCf003mbD6/KF6iOswXN9ufBwemJ7UJi1LwSnzvb9JS652a',	'super_user@super-company.com',	1,	1);
 
--- 2023-01-12 09:22:09.624989+00
+-- 2023-01-12 13:37:18.07191+00

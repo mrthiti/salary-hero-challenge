@@ -17,4 +17,7 @@ export abstract class UserEntity implements User {
 
   @Column({ name: 'role_id' })
   roleId: string;
+
+  @Column({ name: 'company_id' })
+  companyId: string;
 }
