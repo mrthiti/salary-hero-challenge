@@ -29,12 +29,12 @@ export class UserInfoDto implements User {
   })
   @IsString()
   @IsNotEmpty()
-  roleId: string;
+  roleId: number;
 
   @ApiProperty({
     description: 'Company ID.',
   })
   @IsString()
   @IsNotEmpty()
-  companyId: string;
+  companyId: number;
 }

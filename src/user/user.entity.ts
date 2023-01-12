@@ -16,8 +16,8 @@ export abstract class UserEntity implements User {
   email: string;
 
   @Column({ name: 'role_id' })
-  roleId: string;
+  roleId: number;
 
   @Column({ name: 'company_id' })
-  companyId: string;
+  companyId: number;
 }
