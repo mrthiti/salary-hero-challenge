@@ -17,7 +17,6 @@ export class CompanyGuard implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
     return (async () => {
       const request = context.switchToHttp().getRequest();
-      console.log(request.uuid);
       const user = await this.userService.findOneByUuid(request.uuid);
 
       if (user?.roleId != 1)
