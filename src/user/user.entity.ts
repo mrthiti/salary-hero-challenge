@@ -20,4 +20,7 @@ export abstract class UserEntity implements User {
 
   @Column({ name: 'company_id' })
   companyId: number;
+
+  @Column({ name: 'salary' })
+  salary: number;
 }

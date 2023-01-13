@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { User } from './user.interface';
 
 export class UserInfoDto implements User {
@@ -27,14 +27,21 @@ export class UserInfoDto implements User {
   @ApiProperty({
     description: 'Role ID.',
   })
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
   roleId: number;
 
   @ApiProperty({
     description: 'Company ID.',
   })
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
   companyId: number;
+
+  @ApiProperty({
+    description: 'Salary.',
+  })
+  @IsNumber()
+  @IsNotEmpty()
+  salary: number;
 }
