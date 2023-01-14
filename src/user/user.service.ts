@@ -31,7 +31,7 @@ export class UserService {
   }
 
   async addUser(user: User, addUserData: AddUserDto): Promise<UserInfoDto> {
-    let allowAdd = true;
+    let allowAdd = false;
     switch (user.roleId) {
       case 1:
         allowAdd = true;
@@ -77,7 +77,7 @@ export class UserService {
     const foundUser = await this.findOneByUuid(uuid);
     if (!foundUser) throw new HttpException('not found', HttpStatus.NOT_FOUND);
 
-    let allowAdd = true;
+    let allowAdd = false;
     const dataUpdate = { ...foundUser, ...userUpdateData };
     switch (user.roleId) {
       case 1:
