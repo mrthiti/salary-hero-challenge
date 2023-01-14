@@ -7,6 +7,8 @@ import { UserModule } from './user/user.module';
 import { UserEntity } from './user/user.entity';
 import { CompanyModule } from './company/company.module';
 import { CompanyEntity } from './company/company.entity';
+import { RoleModule } from './role/role.module';
+import { RoleEntity } from './role/role.entity';
 
 @Module({
   imports: [
@@ -22,7 +24,7 @@ import { CompanyEntity } from './company/company.entity';
           username: configService.get('POSTGRES_USER'),
           password: configService.get('POSTGRES_PASSWORD'),
           database: configService.get('POSTGRES_DB'),
-          entities: [UserEntity, CompanyEntity],
+          entities: [UserEntity, CompanyEntity, RoleEntity],
           // synchronize: true,
         };
       },
@@ -30,6 +32,7 @@ import { CompanyEntity } from './company/company.entity';
     AuthModule,
     UserModule,
     CompanyModule,
+    RoleModule,
   ],
   controllers: [AppController],
   providers: [],

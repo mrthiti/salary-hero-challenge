@@ -9,17 +9,19 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { IsNumber } from 'class-validator';
 import { LoginDto, TokenDto } from './auth/auth.dto';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthService } from './auth/auth.service';
 import { CompanyDto } from './company/company.dto';
-import { CompanyGuard } from './company/company.guard';
+import { CompanyRoleGuard } from './company/company-role.guard';
 import { CompanyService } from './company/company.service';
-import { UserInfoDto } from './user/user.dto';
+import { UserInfoDto } from './user/dto/user-info.dto';
 import { UserService } from './user/user.service';
+import { AddUserDto } from './user/dto/add-user.dto';
+import { UpdateUserDto } from './user/dto/update-user.dto';
 
 @Controller()
 export class AppController {
@@ -54,7 +56,56 @@ export class AppController {
   @Get('/user/info')
   @UseGuards(AuthGuard)
   async getUserInfo(@Request() req): Promise<UserInfoDto> {
-    return this.userService.getUserInfo(req.uuid);
+    return this.userService.getUserInfo(req.user?.uuid);
+  }
+
+  @ApiTags('User')
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 200,
+    description: 'Add user.',
+    type: UserInfoDto,
+  })
+  @Post('/user')
+  @UseGuards(AuthGuard)
+  async addUserInfo(
+    @Request() req,
+    @Body() addUserData: AddUserDto,
+  ): Promise<UserInfoDto> {
+    return this.userService.addUser(req.user, addUserData);
+  }
+
+  @ApiTags('User')
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 200,
+    description: 'Update user.',
+    type: UserInfoDto,
+  })
+  @Put('/user/:uuid')
+  @UseGuards(AuthGuard)
+  async updateUser(
+    @Request() req,
+    @Param('uuid', ParseUUIDPipe) uuid: string,
+    @Body() addUserData: UpdateUserDto,
+  ): Promise<UserInfoDto> {
+    return this.userService.updateUser(req.user, uuid, addUserData);
+  }
+
+  @ApiTags('User')
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 200,
+    description: 'Delete user.',
+    type: UserInfoDto,
+  })
+  @Delete('/user/:uuid')
+  @UseGuards(AuthGuard)
+  async deleteUser(
+    @Request() req,
+    @Param('uuid', ParseUUIDPipe) uuid: string,
+  ): Promise<void> {
+    return this.userService.deleteUser(req.user, uuid);
   }
 
   @ApiTags('Company')
@@ -79,8 +130,8 @@ export class AppController {
     description: 'Add Company.',
   })
   @Post('/company')
-  @UseGuards(AuthGuard, CompanyGuard)
-  async addCompany(@Body() companyData: CompanyDto): Promise<void> {
+  @UseGuards(AuthGuard, CompanyRoleGuard)
+  async addCompany(@Body() companyData: CompanyDto): Promise<CompanyDto> {
     return this.companyService.addCompany(companyData);
   }
 
@@ -91,7 +142,7 @@ export class AppController {
     description: 'Update Company.',
   })
   @Put('/company/:id')
-  @UseGuards(AuthGuard, CompanyGuard)
+  @UseGuards(AuthGuard, CompanyRoleGuard)
   async updateCompany(
     @Param('id', ParseIntPipe) companyId: number,
     @Body() companyData: CompanyDto,
@@ -106,7 +157,7 @@ export class AppController {
     description: 'Delete Company.',
   })
   @Delete('/company/:id')
-  @UseGuards(AuthGuard, CompanyGuard)
+  @UseGuards(AuthGuard, CompanyRoleGuard)
   async deleteCompany(
     @Param('id', ParseIntPipe) companyId: number,
   ): Promise<void> {

@@ -3,7 +3,7 @@ import { User } from './user.interface';
 
 @Entity('user')
 export abstract class UserEntity implements User {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('uuid', { name: 'uuid' })
   uuid: string;
 
   @Column({ name: 'user_name' })

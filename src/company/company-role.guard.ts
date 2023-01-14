@@ -11,9 +11,8 @@ export class CompanyRoleGuard implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
     return (async () => {
       const request = context.switchToHttp().getRequest();
-      const user = await this.userService.findOneByUuid(request.uuid);
 
-      return user?.roleId === 1;
+      return request?.user?.roleId === 1;
     })();
   }
 }
