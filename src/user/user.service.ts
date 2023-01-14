@@ -131,12 +131,10 @@ export class UserService {
         allowDelete = user.companyId === foundUser.companyId;
         break;
     }
+    if (!allowDelete)
+      throw new HttpException('forbidden resource.', HttpStatus.FORBIDDEN);
 
-    if (allowDelete) {
-      await this.userRepository.delete({ uuid });
-    } else {
-      throw new HttpException('wrong company.', HttpStatus.FORBIDDEN);
-    }
+    await this.userRepository.delete({ uuid });
   }
 
   async findOneByUserName(userName: string): Promise<User> {
