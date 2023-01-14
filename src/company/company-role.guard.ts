@@ -1,15 +1,9 @@
-import {
-  Injectable,
-  CanActivate,
-  ExecutionContext,
-  HttpException,
-  HttpStatus,
-} from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { UserService } from 'src/user/user.service';
 
 @Injectable()
-export class CompanyGuard implements CanActivate {
+export class CompanyRoleGuard implements CanActivate {
   constructor(private readonly userService: UserService) {}
 
   canActivate(
@@ -19,10 +13,7 @@ export class CompanyGuard implements CanActivate {
       const request = context.switchToHttp().getRequest();
       const user = await this.userService.findOneByUuid(request.uuid);
 
-      if (user?.roleId != 1)
-        throw new HttpException('not permission', HttpStatus.FORBIDDEN);
-
-      return true;
+      return user?.roleId === 1;
     })();
   }
 }

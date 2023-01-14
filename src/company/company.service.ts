@@ -23,8 +23,10 @@ export class CompanyService {
     return foundCompany;
   }
 
-  async addCompany(company: Company): Promise<void> {
-    await this.companyRepository.insert(company);
+  async addCompany(company: Company): Promise<Company> {
+    const resInsertCompany = await this.companyRepository.insert(company);
+    company.id = resInsertCompany.generatedMaps[0].id;
+    return company;
   }
 
   async updateCompany(companyId: number, company: Company): Promise<void> {
@@ -47,5 +49,11 @@ export class CompanyService {
 
   async deleteCompany(companyId: number): Promise<void> {
     await this.companyRepository.delete({ id: companyId });
+  }
+
+  async existCompany(companyId: number): Promise<boolean> {
+    return this.companyRepository.exist({
+      where: { id: companyId },
+    });
   }
 }
