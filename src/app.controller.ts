@@ -10,6 +10,8 @@ import {
   Delete,
   ParseIntPipe,
   ParseUUIDPipe,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LoginDto, TokenDto } from './auth/auth.dto';
@@ -24,6 +26,8 @@ import { AddUserDto } from './user/dto/add-user.dto';
 import { UpdateUserDto } from './user/dto/update-user.dto';
 import { RequestMoneyService } from './request-money/request-money.service';
 import { RequestMoneyDto } from './request-money/request-money.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ImportResultDto } from './user/dto/import-user-result.dto';
 
 @Controller()
 export class AppController {
@@ -183,5 +187,22 @@ export class AppController {
       req.user?.uuid,
       requestMoneyData.amount,
     );
+  }
+
+  @ApiTags('User')
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 200,
+    description: 'Import user.',
+    type: ImportResultDto,
+  })
+  @Post('/user/import')
+  @UseGuards(AuthGuard)
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadFile(
+    @Request() req,
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<ImportResultDto> {
+    return this.userService.importUser(req.user, file);
   }
 }

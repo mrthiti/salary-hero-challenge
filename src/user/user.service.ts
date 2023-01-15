@@ -9,6 +9,8 @@ import * as bcrypt from 'bcrypt';
 import { CompanyService } from 'src/company/company.service';
 import { RoleService } from 'src/role/role.service';
 import { AddUserDto } from './dto/add-user.dto';
+import { parse as csvParse } from 'csv-parse/sync';
+import { ImportResultDto } from './dto/import-user-result.dto';
 
 @Injectable()
 export class UserService {
@@ -30,7 +32,7 @@ export class UserService {
     return foundUser as UserInfoDto;
   }
 
-  async addUser(user: User, addUserData: AddUserDto): Promise<UserInfoDto> {
+  async addUser(user: User, addUserData: User): Promise<UserInfoDto> {
     let allowAdd = false;
     switch (user.roleId) {
       case 1:
@@ -56,13 +58,13 @@ export class UserService {
     if (!existCompany)
       throw new HttpException('wrong company.', HttpStatus.BAD_REQUEST);
 
-    addUserData.uuid = uuidv4();
+    addUserData.uuid = addUserData.uuid || uuidv4();
     addUserData.password = await bcrypt.hash(
       addUserData.password,
       await bcrypt.genSalt(),
     );
 
-    await this.userRepository.insert(addUserData);
+    await this.userRepository.save(addUserData);
 
     delete addUserData.password;
 
@@ -118,6 +120,39 @@ export class UserService {
     delete dataUpdate.password;
 
     return dataUpdate as UserInfoDto;
+  }
+
+  async importUser(
+    user: User,
+    file: Express.Multer.File,
+  ): Promise<ImportResultDto> {
+    try {
+      const importResult: ImportResultDto = { successList: [], failList: [] };
+      const usersArr = await csvParse(file.buffer);
+
+      for (const it of usersArr) {
+        const userData = {
+          uuid: it[0],
+          userName: it[1],
+          password: it[2],
+          email: it[3],
+          roleId: +it[4],
+          companyId: +it[5],
+          salary: +it[6],
+        } as AddUserDto;
+
+        try {
+          await this.addUser(user, userData);
+          importResult.successList.push(userData.email);
+        } catch (err) {
+          importResult.failList.push(userData.email);
+        }
+      }
+
+      return importResult;
+    } catch (err) {
+      throw new HttpException('incorrect csv file.', HttpStatus.BAD_REQUEST);
+    }
   }
 
   async deleteUser(user: User, uuid: string): Promise<void> {
