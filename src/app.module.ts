@@ -9,6 +9,8 @@ import { CompanyModule } from './company/company.module';
 import { CompanyEntity } from './company/company.entity';
 import { RoleModule } from './role/role.module';
 import { RoleEntity } from './role/role.entity';
+import { RequestMoneyModule } from './request-money/request-money.module';
+import { RequestMoneyEntity } from './request-money/request-money.entity';
 
 @Module({
   imports: [
@@ -20,12 +22,10 @@ import { RoleEntity } from './role/role.entity';
         return {
           type: 'postgres',
           host: 'localhost',
-          // port: 5432,
           username: configService.get('POSTGRES_USER'),
           password: configService.get('POSTGRES_PASSWORD'),
           database: configService.get('POSTGRES_DB'),
-          entities: [UserEntity, CompanyEntity, RoleEntity],
-          // synchronize: true,
+          entities: [UserEntity, CompanyEntity, RoleEntity, RequestMoneyEntity],
         };
       },
     }),
@@ -33,6 +33,7 @@ import { RoleEntity } from './role/role.entity';
     UserModule,
     CompanyModule,
     RoleModule,
+    RequestMoneyModule,
   ],
   controllers: [AppController],
   providers: [],

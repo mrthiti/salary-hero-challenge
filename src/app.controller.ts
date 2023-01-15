@@ -22,6 +22,8 @@ import { UserInfoDto } from './user/dto/user-info.dto';
 import { UserService } from './user/user.service';
 import { AddUserDto } from './user/dto/add-user.dto';
 import { UpdateUserDto } from './user/dto/update-user.dto';
+import { RequestMoneyService } from './request-money/request-money.service';
+import { RequestMoneyDto } from './request-money/request-money.dto';
 
 @Controller()
 export class AppController {
@@ -29,6 +31,7 @@ export class AppController {
     private readonly authService: AuthService,
     private readonly userService: UserService,
     private readonly companyService: CompanyService,
+    private readonly requestMoneyService: RequestMoneyService,
   ) {}
 
   @ApiTags('Authentication')
@@ -162,5 +165,23 @@ export class AppController {
     @Param('id', ParseIntPipe) companyId: number,
   ): Promise<void> {
     return this.companyService.deleteCompany(companyId);
+  }
+
+  @ApiTags('Request Money')
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 200,
+    description: 'Request Money.',
+  })
+  @Post('/request-money')
+  @UseGuards(AuthGuard)
+  async requestMoney(
+    @Request() req,
+    @Body() requestMoneyData: RequestMoneyDto,
+  ): Promise<void> {
+    return this.requestMoneyService.requestMoney(
+      req.user?.uuid,
+      requestMoneyData.amount,
+    );
   }
 }
