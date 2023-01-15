@@ -21,7 +21,7 @@ import { RequestMoneyEntity } from './request-money/request-money.entity';
       useFactory: (configService: ConfigService) => {
         return {
           type: 'postgres',
-          host: 'localhost',
+          host: configService.get('POSTGRES_HOST_NAME'),
           username: configService.get('POSTGRES_USER'),
           password: configService.get('POSTGRES_PASSWORD'),
           database: configService.get('POSTGRES_DB'),
