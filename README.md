@@ -1,4 +1,4 @@
-# Salaty Hero Challenge
+# Salary Hero Challenge
 
 It's challenge to make API for manage salary of employee in any company, that make by **NestJs**.
 
