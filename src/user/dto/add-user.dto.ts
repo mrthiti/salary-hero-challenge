@@ -6,6 +6,7 @@ export class AddUserDto implements User {
   uuid: string;
 
   @ApiProperty({
+    example: 'thiti',
     description: 'Username.',
   })
   @IsString()
@@ -13,6 +14,7 @@ export class AddUserDto implements User {
   userName: string;
 
   @ApiProperty({
+    example: '1234',
     description: 'Password.',
   })
   @IsString()
@@ -20,6 +22,7 @@ export class AddUserDto implements User {
   password: string;
 
   @ApiProperty({
+    example: 'thiti@thiti.dev',
     description: 'Email.',
   })
   @IsString()
@@ -27,6 +30,7 @@ export class AddUserDto implements User {
   email: string;
 
   @ApiProperty({
+    example: 1,
     description: 'Role ID.',
   })
   @IsNumber()
@@ -34,6 +38,7 @@ export class AddUserDto implements User {
   roleId: number;
 
   @ApiProperty({
+    example: 1,
     description: 'Company ID.',
   })
   @IsNumber()
@@ -41,6 +46,7 @@ export class AddUserDto implements User {
   companyId: number;
 
   @ApiProperty({
+    example: 18000,
     description: 'Salary.',
   })
   @IsNumber()
