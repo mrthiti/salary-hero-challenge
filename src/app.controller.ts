@@ -13,7 +13,13 @@ import {
   UseInterceptors,
   UploadedFile,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { LoginDto, TokenDto } from './auth/auth.dto';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthService } from './auth/auth.service';
@@ -70,7 +76,7 @@ export class AppController {
   @ApiBearerAuth()
   @ApiResponse({
     status: 201,
-    description: 'Add user.',
+    description: 'Add user success.',
     type: UserInfoDto,
   })
   @Post('/user')
@@ -86,8 +92,12 @@ export class AppController {
   @ApiBearerAuth()
   @ApiResponse({
     status: 200,
-    description: 'Update user.',
+    description: 'Update user success.',
     type: UserInfoDto,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Not found user.',
   })
   @Put('/user/:uuid')
   @UseGuards(AuthGuard)
@@ -103,8 +113,11 @@ export class AppController {
   @ApiBearerAuth()
   @ApiResponse({
     status: 200,
-    description: 'Delete user.',
-    type: UserInfoDto,
+    description: 'Delete user success.',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Not found user.',
   })
   @Delete('/user/:uuid')
   @UseGuards(AuthGuard)
@@ -120,6 +133,7 @@ export class AppController {
   @ApiResponse({
     status: 200,
     description: 'Get Company.',
+    type: CompanyDto,
   })
   @Get('/company/:id')
   @UseGuards(AuthGuard)
@@ -134,7 +148,7 @@ export class AppController {
   @ApiBearerAuth()
   @ApiResponse({
     status: 201,
-    description: 'Add Company.',
+    description: 'Add Company success.',
   })
   @Post('/company')
   @UseGuards(AuthGuard, CompanyRoleGuard)
@@ -146,7 +160,7 @@ export class AppController {
   @ApiBearerAuth()
   @ApiResponse({
     status: 200,
-    description: 'Update Company.',
+    description: 'Update Company success.',
   })
   @Put('/company/:id')
   @UseGuards(AuthGuard, CompanyRoleGuard)
@@ -195,6 +209,18 @@ export class AppController {
     status: 200,
     description: 'Import user.',
     type: ImportResultDto,
+  })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
   })
   @Post('/user/import')
   @UseGuards(AuthGuard)

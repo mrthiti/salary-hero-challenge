@@ -7,6 +7,7 @@ export class RequestMoneyDto implements RequestMoney {
   id?: number;
 
   @ApiProperty({
+    example: 1000,
     description: 'Request money amount.',
   })
   @IsNumber()
