@@ -69,7 +69,7 @@ export class AppController {
   @ApiTags('User')
   @ApiBearerAuth()
   @ApiResponse({
-    status: 200,
+    status: 201,
     description: 'Add user.',
     type: UserInfoDto,
   })
