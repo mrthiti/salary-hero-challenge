@@ -50,6 +50,6 @@ CREATE TABLE "public"."user" (
 ) WITH (oids = false);
 
 INSERT INTO "user" ("uuid", "user_name", "password", "email", "role_id", "company_id", "salary") VALUES
-('740b1e0e-925a-11ed-a1eb-0242ac120002',	'super_user',	'$2b$10$scWFhtqCf003mbD6/KF6iOswXN9ufBwemJ7UJi1LwSnzvb9JS652a',	'super_user@super-company.com',	2,	1,	10000);
+('740b1e0e-925a-11ed-a1eb-0242ac120002',	'super_user',	'$2b$10$scWFhtqCf003mbD6/KF6iOswXN9ufBwemJ7UJi1LwSnzvb9JS652a',	'super_user@super-company.com',	1,	1,	10000);
 
 -- 2023-01-15 18:20:53.19808+00
