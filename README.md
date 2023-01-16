@@ -35,3 +35,7 @@ Database admin at
 ```
 http://localhost:8080
 ```
+
+CSV example file at
+
+[users-example.csv](users-example.csv)
