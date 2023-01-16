@@ -2,7 +2,7 @@
 
 It's challenge to make API for manage salary of employee in any company, that make by NestJs.
 
-## How to runing the app
+## Runing the app
 
 ```bash
 # Prepare env file (copy file example.env into .env)
@@ -39,3 +39,9 @@ http://localhost:8080
 CSV example file at
 
 [users-example.csv](users-example.csv)
+
+## Build production docker image
+
+```
+docker build -t myapp .
+```
