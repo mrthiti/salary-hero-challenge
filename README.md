@@ -1,6 +1,6 @@
 # Salaty Hero Challenge
 
-It's challenge to make API for manage salary of employee in any company, that make by NestJs.
+It's challenge to make API for manage salary of employee in any company, that make by **NestJs**.
 
 ## Runing the app
 
